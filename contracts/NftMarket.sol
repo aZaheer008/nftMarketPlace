@@ -95,6 +95,10 @@ contract NftMarket is ERC721URIStorage {
         return items;
     }
 
+    function burnToken(uint tokenId) public {
+        _burn(tokenId);
+    }
+
     function mintToken(string memory tokenURI , uint price) public payable returns (uint) {
         require(!tokenURIExists(tokenURI), "Token URI already exists");
         require(msg.value == listingPrice, "Price must be equal to listing price");
@@ -156,7 +160,9 @@ contract NftMarket is ERC721URIStorage {
             _removeTokenFromOwnerEnumeration(from, tokenId);
         }
 
-        if (to != from) {
+        if (to == address(0)){
+            _removeTokenFromAllTokensEnumeration(tokenId);
+        } else if (to != from) {
             _addTokenToOwnerEnumeration(to, tokenId);
         }
     }
@@ -187,5 +193,17 @@ contract NftMarket is ERC721URIStorage {
         delete _idToOwnedIndex[tokenId];
         delete _ownedTokens[from][lastTokenIndex];
 
+    }
+
+    function _removeTokenFromAllTokensEnumeration(uint tokenId) private {
+        uint lastTokenIndex = _allNfts.length - 1 ;
+        uint tokenIndex = _idToNftIndex[tokenId];
+        uint lastTokenId = _allNfts[lastTokenIndex];
+
+        _allNfts[tokenIndex] = lastTokenId;
+        _idToNftIndex[lastTokenId] = tokenIndex;
+
+        delete _idToNftIndex[tokenId];
+        _allNfts.pop();
     }
 }
