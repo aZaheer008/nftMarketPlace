@@ -1,12 +1,14 @@
 import type { NextPage } from 'next'
 import { BaseLayout, NftList } from '@ui';
-import nfts from "../content/meta.json";
-import { NftMeta } from '@_types/nft';
 import { useWeb3 } from '@providers/web3';
+import { useListedNfts } from '@hooks/web3';
+import { Nft } from '@_types/nft';
 
 const Home: NextPage = () => {
   const { ethereum, provider, isLoading, contract } = useWeb3();
+  const { nfts } = useListedNfts();
 
+  console.log("----nfts---",nfts.data);
   
    return (
     <BaseLayout>
@@ -21,7 +23,7 @@ const Home: NextPage = () => {
               Mint a NFT to get unlimited ownership forever!
             </p>
           </div>
-          <NftList nfts={nfts as NftMeta[]} />
+          <NftList nfts={nfts?.data as Nft[]} />
         </div>
       </div>
     </BaseLayout>
