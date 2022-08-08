@@ -156,15 +156,17 @@ const NftCreate: NextPage = () => {
 
       await toast.promise(
         tx!.wait(), {
-          pending : "Creating NFT",
-          success : "NFT Created",
-          error : "NFT Create Error"
+          pending : "Minting NFT Token",
+          success : "NFT has been Created",
+          error : "Minting Error"
         }
       )
     } catch (error : any) {
       console.error("createNft : ",error.message);
     }
   };
+
+  console.log("---Create--169----network---- : ",network)
 
   if (!network.isConnectedToNetwork) {
     return (

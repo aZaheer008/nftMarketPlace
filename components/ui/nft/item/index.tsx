@@ -6,6 +6,10 @@ type NftItemProps = {
     buyNft: (tokenId: number, value: number) => Promise<void>
 }
 
+function shortifyAddress(address: string) {
+    return `0x****${address.slice(-4)}`
+}
+
 const NftItem : FunctionComponent<NftItemProps> = ({item , buyNft}) => {
 
     return (
@@ -18,15 +22,30 @@ const NftItem : FunctionComponent<NftItemProps> = ({item , buyNft}) => {
                 />
             </div>
             <div className="flex-1 bg-white p-6 flex flex-col justify-between">
-                <div className="flex-1">
-                <p className="text-sm font-medium text-indigo-600">
+            <div className="flex-1">
+                <div className="flex justify-between items-center">
+                    <div className="flex items-center mt-2">
+                    <div>
+                        <img
+                        className="inline-block h-9 w-9 rounded-full"
+                        src="/images/default_avatar.png"
+                        alt=""
+                        />
+                    </div>
+                    <div className="ml-3">
+                        <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Creator</p>
+                        <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">{shortifyAddress(item.creator)}</p>
+                    </div>
+                    </div>
+                    <p className="text-sm font-medium text-indigo-600">
                     Creatures NFT
-                </p>
+                    </p>
+                </div>
                 <div className="block mt-2">
                     <p className="text-xl font-semibold text-gray-900">{item.meta.name}</p>
                     <p className="mt-3 mb-3 text-base text-gray-500">{item.meta.description}</p>
                 </div>
-                </div>
+            </div>
                 <div className="overflow-hidden mb-4">
                 <dl className="-mx-4 -mt-4 flex flex-wrap">
                     <div className="flex flex-col px-4 pt-4">
